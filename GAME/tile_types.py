@@ -15,6 +15,7 @@ tile_dt = np.dtype(
 		("walkable", np.bool), #1 si on peut marcher sur la tile
 		("transparent", np.bool), #1 si la tile ne bloque pas le FOV
 		("dark", graphic_dt), #Graphics si la tile n'est pas dans le FOV
+		("light", graphic_dt), #When u can see it
 	]
 )
 
@@ -23,12 +24,21 @@ def new_tile(
 	walkable: int,
 	transparent: int,
 	dark: Tuple[int, Tuple[int, int, int], Tuple[int, int, int]],
+	light: Tuple[int, Tuple[int, int, int], Tuple[int, int, int]],
 ) -> np.ndarray:
-	return np.array((walkable, transparent, dark), dtype=tile_dt)
+	return np.array((walkable, transparent, dark, light), dtype=tile_dt)
+
+SHROUD = np.array((ord(" "), (255, 255, 255), (0, 0, 0)), dtype=graphic_dt)
 
 floor = new_tile(
-	walkable=True, transparent=True, dark=(ord(" "), (255, 255, 255), (50, 50, 150)),
+	walkable=True,
+	transparent=True,
+	dark=(ord(" "), (255, 255, 255), (50, 50, 150)),
+	light=(ord(" "), (255, 255, 255), (200, 180, 50)),
 )
 wall = new_tile(
-	walkable=False, transparent=False, dark=(ord(" "), (255, 255, 255), (0, 0, 100)),
+	walkable=False,
+	transparent=False,
+	dark=(ord(" "), (255, 255, 255), (0, 0, 100)),
+	light=(ord(" "), (255, 255, 255), (130, 110, 50)),
 )
